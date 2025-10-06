@@ -1,6 +1,6 @@
 # 🦈 Shark Habitat Modeling & Data Analysis
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-View_The_App-0096D6?style=for-the-badge&logo=python&logoColor=white)](https://abdo0ablo.pythonanywhere.com/)
+(https://img.shields.io/badge/Live_Demo-View_The_App-0096D6?style=for-the-badge&logo=python&logoColor=white)](https://abdo0ablo.pythonanywhere.com/)
 [![Made with Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 ---
