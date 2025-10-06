@@ -1,10 +1,5 @@
 # 🦈 Shark Habitat Modeling & Data Analysis
 
-(https://img.shields.io/badge/Live_Demo-View_The_App-0096D6?style=for-the-badge&logo=python&logoColor=white)](https://abdo0ablo.pythonanywhere.com/)
-[![Made with Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-
----
-
 ## ✨ Quick Project Overview
 
 This is an **interactive web application** built with **Python** and the **Flask** framework. The project is dedicated to **marine conservation** and **data visualization**, focusing on the **habitat and ecological factors of sharks**.
