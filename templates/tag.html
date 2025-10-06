@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/1.14.1/model-viewer.min.js"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0096D6",
+                        "secondary": "#00B894",
+                        "background-light": "#E0DEDE",
+                        "light-accent-bg": "#BABABA",
+                        "background-dark": "#0B1121",
+                        "accent-blue": "#00C6FF",
+                        "sea-green": "#1E8449",
+                        "midnight-black": "#000000",
+                        "soft-gray": "#94A3B8"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Space+Grotesk%3Awght%40400%3B500%3B700" onload="this.rel='stylesheet'" rel="stylesheet" />
+    <title>YA³O</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <style>
+        /* Define fixed header/nav heights for main content padding calculation */
+        
+         :root {
+            --header-height: 75px;
+            --nav-guide-height: 52px;
+            /* Approximate based on py-3 and text-sm */
+            --total-fixed-height: calc(var(--header-height) + var(--nav-guide-height));
+        }
+        
+        .view-part-btn {
+            /* Applied Tailwind utilities for hover/focus states */
+            @apply px-3 py-1 text-xs rounded-full bg-primary text-white transition-colors shadow-md;
+            position: relative;
+        }
+        /* FIX: Ensure the hover state works correctly with the applied bg-primary/50 class for active state */
+        
+        .view-part-btn:hover:not(.view-part-btn-active) {
+            @apply bg-secondary/70;
+            /* Slightly darker secondary on hover when not active */
+        }
+        /* New class for active button state, ensuring it remains visible */
+        
+        .view-part-btn-active {
+            @apply bg-primary/80;
+        }
+        
+        .view-part-btn:focus {
+            @apply ring-2 ring-primary/50 outline-none;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        /* ---------------------------------------------------- */
+        /* التعديل الرئيسي: إزالة التحريك من العناصر العلوية وإضافة delay للعناصر الأخرى */
+        /* ---------------------------------------------------- */
+        
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(24px);
+            /* سرعة مقبولة للتحميل الفوري */
+            transition: opacity 600ms cubic-bezier(0.215, 0.610, 0.355, 1.000), transform 600ms cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            will-change: opacity, transform;
+        }
+        
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* اجعل العناصر التي تظهر فورًا (مثل العناوين الرئيسية) تظهر بشكل أسرع */
+        
+        .immediate-fade-in {
+            transition-delay: 100ms;
+            /* تأخير بسيط لإعطاء الأولوية للـ header/nav */
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+
+        <header id="main-header" class="fixed top-0 z-40 w-full flex items-center justify-between whitespace-nowrap border-b border-primary/20 dark:border-white/10 px-6 sm:px-10 py-4 bg-light-accent-bg/90 dark:bg-background-dark/95 backdrop-blur-sm shadow-lg"
+            style="height: var(--header-height);">
+
+            <div class="flex items-center gap-3 text-gray-800 dark:text-white">
+                <a href="{{ url_for('home') }}" class="flex items-center gap-3 text-gray-800 dark:text-white">
+                    <img src="{{ url_for('static', filename='Untitled design-Picsart-AiImageEnhancer_imgupscaler.ai_General_16K.png') }}" alt="SHARKS Logo" class="h-20 w-20">
+                    <h2 class="text-xl font-bold">YA³O</h2>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex space-x-8" , style="margin-right: 70px;">
+                <a href="{{ url_for('home') }}" class="text-gray-900 dark:text-white hover:text-primary dark:hover:text-accent-blue transition duration-300 font-medium">Home</a>
+                <a href="{{ url_for('tag_details') }}" class="text-primary dark:text-accent-blue font-bold transition duration-300 font-medium">Tag 3D Visuals</a>
+                <a href="{{ url_for('mathematical_model') }}" class="text-gray-900 dark:text-white hover:text-primary dark:hover:text-accent-blue transition duration-300 font-medium">Mathematical Framework & Data Analysis</a>
+                <a href="{{ url_for('research_details') }}" class="text-gray-900 dark:text-white hover:text-primary dark:hover:text-accent-blue transition duration-300">Research PARPER</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button id="dark-mode-toggle" class="p-2 rounded-full text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                    <span id="light-icon" class="material-symbols-outlined text-2xl">light_mode</span>
+                    <span id="dark-icon" class="material-symbols-outlined text-2xl hidden">dark_mode</span>
+                </button>
+            </div>
+        </header>
+
+        <nav id="tag-guide" class="fixed top-[var(--header-height)] z-30 w-full bg-light-accent-bg/80 dark:bg-background-dark/90 backdrop-blur-sm shadow-md transition-colors duration-300 px-6 sm:px-10 py-3 border-b border-primary/20 dark:border-white/10">
+            <div class="max-w-7xl mx-auto flex justify-start space-x-6 overflow-x-auto justify-center">
+                <a href="#ai-integration-block" class="text-sm font-semibold text-gray-800 dark:text-white hover:text-primary dark:hover:text-accent-blue transition duration-300 whitespace-nowrap">
+                    AI Integration
+                </a>
+                <a href="#model-viewer-block" class="text-sm font-semibold text-gray-800 dark:text-white hover:text-primary dark:hover:text-accent-blue transition duration-300 whitespace-nowrap">
+                    3D Model Viewer
+                </a>
+                <a href="#table-title" class="text-sm font-semibold text-gray-800 dark:text-white hover:text-primary dark:hover:text-accent-blue transition duration-300 whitespace-nowrap">
+                    Component Specs
+                </a>
+            </div>
+        </nav>
+
+        <main class="flex flex-1 flex-col pb-16 px-4 sm:px-6 lg:px-8" style="padding-top: var(--total-fixed-height);">
+            <div class="max-w-7xl mx-auto w-full text-center text-gray-900 dark:text-white pt-12 sm:pt-24">
+                <h1 class="text-5xl font-bold mb-4 text-primary fade-in-on-scroll is-visible immediate-fade-in">The SHARKS AI Telemetry Tag</h1>
+                <p class="text-xl text-gray-600 dark:text-soft-gray max-w-4xl mx-auto mb-12 fade-in-on-scroll is-visible immediate-fade-in" style="transition-delay: 200ms;">
+                    A state of the art device for real time data collection, behavioral analysis, and predictive modeling of marine megafauna movements.
+                </p>
+
+                <div id="ai-integration-block" class="bg-white dark:bg-[#0F142B] p-8 rounded-xl border border-gray-300 dark:border-white/10 shadow-2xl mb-16 text-left fade-in-on-scroll is-visible immediate-fade-in transition-all duration-300 ease-in-out hover:scale-[1.01] hover:shadow-primary/30"
+                    style="transition-delay: 300ms;">
+                    <h2 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">AI Integration and Predictive Power</h2>
+                    <p class="text-lg text-gray-700 dark:text-soft-gray space-y-3">
+                        The SHARKS tag acts as a mobile oceanographic station. It continuously streams telemetry and environmental data to a central AI model via the Iridium satellite network. This model is trained to correlate shark behavior (speed, depth, orientation) with
+                        critical environmental factors to predict the animal's next movements and understand its foraging strategy.
+                    </p>
+                    <p class="mt-4 space-y-3 text-gray-700 dark:text-soft-gray">
+                        <span class="font-semibold text-primary">Feeding Ground Prediction:</span> By analyzing Chlorophyll-a, Photosynthetically Available Radiation (PAR), Fluorescence Line Height (FLH) , Particulate Organic Carbon and Spectral particle
+                        backscattering coefficients, the AI identifies areas of high primary productivity (phytoplankton blooms), which form the base of the food web and indicate potential feeding grounds.
+                    </p>
+                    <p class="mt-4 space-y-3 text-gray-700 dark:text-soft-gray">
+                        <span class="font-semibold text-primary">Behavioral Insight:</span> Temperature and gyroscope data help the AI differentiate between different behavioral states (resting, transit, active hunting), providing unprecedented insight
+                        into how sharks think.
+                    </p>
+                    <p class="mt-4 space-y-3 text-gray-700 dark:text-soft-gray">
+                        <span class="font-semibold text-primary">Data Flow:</span> The tag sends data (GPS, Depth, Temp, PAR, Chl-a, FLH, BBP, POC) to the Iridium network, which is then processed by a machine learning pipeline to generate movement forecasts
+                        and habitat utilization maps.
+                    </p>
+                </div>
+
+                <div id="model-viewer-block" class="bg-white dark:bg-[#0F142B] p-4 rounded-xl border border-gray-300 dark:border-white/10 shadow-2xl h-[500px] lg:h-[700px] relative fade-in-on-scroll is-visible immediate-fade-in" style="transition-delay: 400ms;">
+                    <model-viewer src="{{ url_for('static', filename='models/main.glb') }}" alt="SHARKS Tag 3D Model" auto-rotate camera-controls shadow-intensity="1" exposure="0.8" class="w-full h-full rounded-lg" id="tag-model-viewer" style="--progress-bar-color: #0096D6; --poster-color: #f0f0f0;"
+                        data-base-path="{{ url_for('static', filename='models/') }}">
+                    </model-viewer>
+                </div>
+
+                <div id="reset-button-block" class="mt-6 mb-12 text-center fade-in-on-scroll is-visible immediate-fade-in" style="transition-delay: 500ms;">
+                    <button id="view-full-tag" class="inline-flex items-center gap-2 px-8 py-3 text-base rounded-full bg-secondary text-white font-semibold shadow-lg shadow-secondary/30 hover:shadow-xl hover:shadow-secondary/40 transition-all active:scale-[.98] active:shadow-md">
+                        <span class="material-symbols-outlined text-lg">view_in_ar</span> View Full Tag (Reset)
+                    </button>
+                </div>
+
+                <div class="text-left">
+                    <h2 id="table-title" class="text-3xl font-bold mb-6 text-gray-900 dark:text-white fade-in-on-scroll">Detailed Component Specifications</h2>
+
+                    <table id="component-table" class="min-w-full divide-y divide-gray-200 dark:divide-white/10 rounded-lg overflow-hidden bg-white dark:bg-[#0F142B] shadow-lg fade-in-on-scroll">
+                        <thead class="bg-primary/10 dark:bg-primary/20">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider w-1/4">Component</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider w-1/2">Function & Detail</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-200 uppercase tracking-wider w-1/4">View Model</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-white/10">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Iridium Antenna</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    Global Satellite Telemetry. Provides two-way communication for real-time data uplink to Iridium satellites, ensuring near-global coverage even in remote marine areas.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="iridium.glb" title="Iridium Antenna">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">GPS Module</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    High-Precision Geolocation. Logs latitude and longitude with high accuracy, essential for tracking fine-scale movement patterns and habitat use upon surfacing.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="GPS.glb" title="GPS Module">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Control Unit</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    The Tag's Brain. Contains the embedded microcontroller and memory for executing data logging protocols, sensor interfacing, and managing power cycles. Crucial for on-board processing before transmission.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="control.glb" title="Control Unit">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Internal Battery</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    Long-Duration Power Supply. A high-capacity, low-self-discharge lithium battery optimized for prolonged deployment periods, ensuring continuous operation for critical data streams.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="battery.glb" title="Internal Battery">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Depth Sensor</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    Vertical Habitat Profiling. Measures hydrostatic pressure to derive swimming depth and detailed dive profiles (time-at-depth), revealing vertical habitat utilization patterns.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="depth-sensor.glb" title="Depth Sensor">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Gyroscope & Accel. (IMU)</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    Behavioral State Sensing. Combined Inertial Measurement Unit (IMU) records acceleration and angular velocity, allowing researchers to distinguish between resting, slow cruising, and active hunting behaviors.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="gyroscope-acceleration.glb" title="Gyroscope & Accel. (IMU)">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Hydrophone</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    Acoustic Environment Monitoring. A passive sensor capable of recording ambient noise or tracking specific acoustic pings, offering insight into the shark's proximity to other marine life or sound pollution.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="hydrophone.glb" title="Hydrophone">View</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">Temperature Sensor</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-soft-gray">
+                                    Oceanographic Data. Records ambient water temperature, a critical physical variable influencing the shark's metabolic rate, habitat selection, and migratory routes.
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"><button class="view-part-btn" data-model="temp sensor.glb" title="Temperature Sensor">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="bg-light-accent-bg dark:bg-midnight-black border-t border-primary/20 dark:border-white/10 py-12 px-4 sm:px-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="pt-8 border-t border-gray-200 dark:border-white/10 text-center">
+                    <p class="text-sm text-gray-500 dark:text-soft-gray">© 2025 YA³O Project. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const htmlElement = document.documentElement;
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const modelViewer = document.getElementById('tag-model-viewer');
+            const viewPartButtons = document.querySelectorAll('.view-part-btn');
+            const basePath = modelViewer.getAttribute('data-base-path');
+            const originalModelFilename = 'main.glb';
+
+            // 1. Dark Mode Logic (CLEANED UP & WORKING)
+            const lightIcon = document.getElementById('light-icon');
+            const darkIcon = document.getElementById('dark-icon');
+
+            const updateIconVisibility = (isDark) => {
+                if (isDark) {
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            };
+
+            const getInitialMode = () => {
+                const storedMode = localStorage.getItem('darkMode');
+                if (storedMode !== null) {
+                    return storedMode === 'true';
+                }
+                return window.matchMedia('(prefers-color-scheme: dark)').matches;
+            };
+
+            const isDarkMode = getInitialMode();
+            if (isDarkMode) {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
+            }
+            updateIconVisibility(isDarkMode);
+
+            darkModeToggle.addEventListener('click', () => {
+                const isCurrentlyDark = htmlElement.classList.contains('dark');
+                let newModeIsDark;
+
+                if (isCurrentlyDark) {
+                    htmlElement.classList.remove('dark');
+                    localStorage.setItem('darkMode', 'false');
+                    newModeIsDark = false;
+                } else {
+                    htmlElement.classList.add('dark');
+                    localStorage.setItem('darkMode', 'true');
+                    newModeIsDark = true;
+                }
+
+                updateIconVisibility(newModeIsDark);
+            });
+
+            // 2. Model Interaction Logic (CLEANED UP & ENHANCED)
+            const setActiveButton = (buttonToActivate) => {
+                // Deactivate all buttons
+                viewPartButtons.forEach(btn => {
+                    btn.classList.remove('view-part-btn-active');
+                });
+                // Activate the current one
+                if (buttonToActivate) {
+                    buttonToActivate.classList.add('view-part-btn-active');
+                }
+            };
+
+            viewPartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const partModel = button.getAttribute('data-model');
+                    const newSrc = `${basePath}${partModel}`;
+
+                    modelViewer.setAttribute('src', newSrc);
+
+                    // Set active state
+                    setActiveButton(button);
+                });
+            });
+
+            // Reset button
+            const fullTagButton = document.getElementById('view-full-tag');
+            if (fullTagButton) {
+                fullTagButton.addEventListener('click', () => {
+                    // Reset to the original model
+                    modelViewer.setAttribute('src', `${basePath}${originalModelFilename}`);
+                    // Remove active state from all buttons
+                    setActiveButton(null);
+                });
+            }
+
+            // 3. 🚀 SCROLL ANIMATION LOGIC (Intersection Observer RE-IMPLEMENTED)
+            // نختار فقط العناصر التي لم تُضف إليها فئة is-visible في كود HTML
+            const animatedElements = document.querySelectorAll('.fade-in-on-scroll:not(.is-visible)');
+
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1 // 10% of element visible
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            animatedElements.forEach(element => {
+                observer.observe(element);
+            });
+            // End of Intersection Observer Logic
+        });
+    </script>
+</body>
+
+</html>
