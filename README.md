@@ -28,14 +28,6 @@ The project is structured around a reliable and modern stack:
 
 ---
 
-## 🖼️ Project Visual
-
-<p align="center">
-  <img src="hotspot_globe_3d.html" alt="A high-resolution screenshot or visual representation of the web application's main interface." width="750"/>
-</p>
-
----
-
 ## 🛠️ Local Setup Guide (For Developers)
 
 Follow these steps to get a copy of the project running on your local machine.
