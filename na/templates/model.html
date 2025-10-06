@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="dark" lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YA³O</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base body styles for Light Mode */
+        
+        body {
+            background-color: #E0DEDE;
+            color: #1F2937;
+            transition: background-color 0.5s, color 0.5s;
+            /* Apply the imported font as the default display font */
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Dark Mode body styles */
+        
+        .dark body {
+            background-color: #0B1121;
+            /* Adjusted for better contrast on Dark Mode body text */
+            color: #E5E7EB;
+        }
+        /* MathJax styling */
+        
+        .math {
+            direction: ltr;
+            text-align: center;
+            font-size: 1.1rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            margin: 1.5rem 0;
+            background-color: rgba(0, 150, 214, 0.05);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(0, 150, 214, 0.2);
+        }
+        /* Scroll animation styles */
+        
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+            will-change: opacity, transform;
+        }
+        
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Smooth Scroll */
+        
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0096D6",
+                        "secondary": "#00B894",
+                        "background-light": "#E0DEDE",
+                        "light-accent-bg": "#BABABA",
+                        "background-dark": "#0B1121",
+                        "accent-blue": "#00C6FF",
+                        "sea-green": "#1E8449",
+                        "midnight-black": "#000000",
+                        "soft-gray": "#94A3B8"
+                    },
+                    fontFamily: {
+                        /* The font has been imported in the <head> */
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    keyframes: {
+                        'fade-in-up': {
+                            '0%': {
+                                opacity: '0',
+                                transform: 'translateY(20px)'
+                            },
+                            '100%': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            },
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fade-in-up 0.7s ease-out forwards',
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm shadow-xl border-b border-primary/20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center relative">
+            <a href="#" class="flex items-center space-x-2 z-10">
+                <img src="{{ url_for('static', filename='Untitled design-Picsart-AiImageEnhancer_imgupscaler.ai_General_16K.png') }}" alt="SHARKS Logo" class="h-20 w-20">
+                <span class="text-xl font-display font-bold text-gray-900 dark:text-white tracking-widest">YA³O</span>
+            </a>
+
+            <nav class="hidden md:flex space-x-6 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0">
+                <a href="{{ url_for('home') }}" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 font-medium">Home</a>
+                <a href="{{ url_for('tag_details') }}" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 font-medium">Tag 3D Visuals</a>
+                <a href="{{ url_for('mathematical_model') }}" class="text-primary dark:text-primary border-b-2 border-primary pb-1 font-medium">Mathematical Framework & Data Analysis</a>
+                <a href="{{ url_for('research_details') }}" class="text-gray-900 dark:text-white hover:text-primary dark:hover:text-accent-blue">Research Paper</a>
+            </nav>
+
+            <div class="flex items-center space-x-4 z-10">
+                <button id="theme-toggle" type="button" class="text-gray-600 dark:text-soft-gray hover:text-primary transition-colors duration-300 p-2 rounded-full bg-light-accent-bg/30 dark:bg-soft-gray/10 hover:bg-primary/20 dark:hover:bg-primary/10">
+                    <svg id="theme-toggle-light-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="theme-toggle-dark-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+
+                <button class="md:hidden text-gray-900 dark:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="sticky top-[4.5rem] z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md shadow-inner border-b border-secondary/30 py-4 mb-10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-6 text-lg font-semibold">
+                <a href="#section-overview" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 px-3 py-1 rounded-full hover:bg-primary/10">Model Overview</a>
+                <a href="#section-math" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 px-3 py-1 rounded-full hover:bg-primary/10">Math Framework</a>
+                <a href="#section-biological" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 px-3 py-1 rounded-full hover:bg-primary/10">Biological Index</a>
+                <a href="#section-hotspot" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 px-3 py-1 rounded-full hover:bg-primary/10">Hotspot Condition</a>
+                <a href="#section-visuals" class="text-gray-700 dark:text-soft-gray hover:text-primary dark:hover:text-accent-blue transition-colors duration-300 px-3 py-1 rounded-full hover:bg-primary/10">Visuals</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+
+        <section id="section-overview" class="mb-16 pt-8 fade-in-on-scroll">
+            <h2 class="text-4xl font-display font-bold text-primary mb-6 border-b border-primary/50 pb-2">Model Overview & Performance</h2>
+            <p class="text-lg text-gray-700 dark:text-soft-gray leading-relaxed">
+                The habitat prediction is built on the Random Forest Regression model, which leverages multiple decision trees to produce a stable and highly accurate prediction of shark presence probability (hat(Y)). The model's success is quantified using the Coefficient
+                of Determination R-squared, and its predictive mechanism is revealed through the Feature Importance metric.
+            </p>
+            <div class="mt-8 bg-light-accent-bg/30 dark:bg-background-dark/50 p-6 rounded-xl shadow-lg border border-primary/20">
+                <h3 class="text-2xl font-display font-semibold text-gray-900 dark:text-white mb-4">Core Model Inputs:</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-soft-gray">
+                    <li><strong class="text-primary dark:text-accent-blue">Latitude and Longitude (Lat/Lon):</strong> The geographical location.</li>
+                    <li><strong class="text-primary dark:text-accent-blue">Sea Surface Temperature (SST):</strong> A primary factor influencing species' thermal range.</li>
+                    <li><strong class="text-primary dark:text-accent-blue">Simulated NPP:</strong> A robust biological proxy for prey availability.</li>
+                </ul>
+                <p class="mt-4 text-md font-semibold text-secondary dark:text-secondary">
+                    Model Performance R-squared: <span class="text-xl">0.9234</span>
+                </p>
+            </div>
+        </section>
+
+        <hr class="border-t border-primary/20 my-10" />
+
+        <section id="section-math" class="mb-16 pt-8 fade-in-on-scroll">
+            <h2 class="text-4xl font-display font-bold text-primary mb-6 border-b border-primary/50 pb-2">Math Framework & Model Validation</h2>
+            <p class="text-lg text-gray-700 dark:text-soft-gray leading-relaxed mb-8">
+                The following equations detail the mathematical core of the Random Forest model and the metrics used to validate its predictions.
+            </p>
+
+            <div class="bg-background-light dark:bg-background-dark p-6 rounded-xl shadow-2xl border border-secondary/20 mb-8">
+                <h3 class="text-2xl font-display font-semibold text-secondary mb-4">1. Model Accuracy: Coefficient of Determination (R-squared)</h3>
+                <p class="text-gray-700 dark:text-soft-gray mb-4">
+                    The R-squared value quantifies the proportion of variance in the dependent variable (Y, e.g., SST or probability) that is predictable from the independent variables. A value closer to 1 indicates a near-perfect fit.
+                </p>
+                <div class="math">
+                    $$\mathbf{R^2} = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}$$
+                </div>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-soft-gray mt-4">
+                    <li>(y_i): The True Value at point (i).</li>
+                    <li>(hat(y)_i): The Predicted Value (from the model) at point (i).</li>
+                    <li>(bar(y)): The mean of the true values.</li>
+                    <li>The numerator is the Residual Sum of Squares; the denominator is the Total Sum of Squares (Total Variance).</li>
+                </ul>
+            </div>
+
+            <div class="bg-background-light dark:bg-background-dark p-6 rounded-xl shadow-2xl border border-secondary/20 mb-8">
+                <h3 class="text-2xl font-display font-semibold text-secondary mb-4">2. Feature Importance (Mean Decrease in Impurity - MDI)</h3>
+                <p class="text-gray-700 dark:text-soft-gray mb-4">
+                    MDI measures the total reduction in the training criterion (MSE) achieved by a feature (X_j) when splitting nodes across all decision trees. This reveals the true drivers of habitat selection in the model.
+                </p>
+                <div class="math">
+                    $$\mathbf{\text{Importance}(X_j) = \frac{\sum_{t \in \text{Forest}} \sum_{m \in T_t} \mathbf{\Delta I(m, X_j)}}{\sum_{k \in \text{Features}} \sum_{t \in \text{Forest}} \sum_{m \in T_t} \mathbf{\Delta I(m, X_k)}}}$$
+                </div>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-soft-gray mt-4">
+                    <li>(X_j): The feature being evaluated (e.g., Lat, SST).</li>
+                    <li>(Delta I(m, X_j)): The decrease in impurity (MSE reduction) when splitting node (m) using feature (X_j).</li>
+                    <li><strong class="text-primary dark:text-accent-blue">Result Interpretation:</strong> The Feature Importance (MDI) analysis shows that Simulated Net Primary Production (NPP) is the most dominant factor in habitat prediction, followed
+                        closely by Latitude (Lat). This relatively balanced distribution of importance indicates that both food availability (proxied by NPP) and physical oceanographic processes (proxied by Lat) play crucial and complementary roles in
+                        driving the predicted high-priority feeding areas.
+
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="border-t border-primary/20 my-10" />
+
+        <section id="section-biological" class="mb-16 pt-8 fade-in-on-scroll">
+            <h2 class="text-4xl font-display font-bold text-primary mb-6 border-b border-primary/50 pb-2">3. Biological Index Creation (Simulated NPP)</h2>
+            <p class="text-lg text-gray-700 dark:text-soft-gray leading-relaxed mb-8">
+                The base model showed that Chlorophyll-a (chlor\_a) only had 0.9% importance, indicating it was a weak predictor alone. To better represent prey availability (the biological requirement), a more robust index was created: Simulated Net Primary Production
+                (NPP).
+            </p>
+
+            <div class="bg-background-light dark:bg-background-dark p-6 rounded-xl shadow-2xl border border-secondary/20">
+                <h3 class="text-2xl font-display font-semibold text-secondary mb-4">Simulated NPP Equation</h3>
+                <p class="text-gray-700 dark:text-soft-gray mb-4">
+                    This index combines the standing stock of biomass (Chlor\_a) with the available energy for photosynthesis (PAR) to provide a stronger proxy for active food generation.
+                </p>
+                <div class="math">
+                    $$\mathbf{NPP} = \mathbf{\text{Chlor\_a}} \times \mathbf{\text{PAR}}$$
+                </div>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-soft-gray mt-4">
+                    <li>(Chlor\_a): Standing stock of plant biomass (phytoplankton).</li>
+                    <li>(PAR) (Photosynthetically Available Radiation): The available light energy.</li>
+                    <li><strong class="text-primary dark:text-accent-blue">Importance:</strong> NPP is a superior proxy for active food production than Chlorophyll alone, reflecting the true base of the food chain that sustains the shark's prey.</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="border-t border-primary/20 my-10" />
+
+        <section id="section-hotspot" class="mb-16 pt-8 fade-in-on-scroll">
+            <h2 class="text-4xl font-display font-bold text-primary mb-6 border-b border-primary/50 pb-2">4. Hotspot Mapping: The Composite Condition</h2>
+            <p class="text-lg text-gray-700 dark:text-soft-gray leading-relaxed mb-8">
+                A true feeding Hotspot must satisfy two simultaneous criteria: a strong physical mechanism to aggregate prey and high biological productivity to supply prey. The final hotspot map is generated using a logical Composite Condition.
+            </p>
+
+            <div class="bg-background-light dark:bg-background-dark p-6 rounded-xl shadow-2xl border border-secondary/20 mb-8">
+                <h3 class="text-2xl font-display font-semibold text-secondary mb-4">Thermal Front Intensity (TFI)</h3>
+                <p class="text-gray-700 dark:text-soft-gray mb-4">
+                    The strength of the physical aggregation mechanism is measured by the Rate of Temperature Change (Gradient Magnitude) of the predicted temperature field ($T$). This identifies thermal fronts, where water masses collide, concentrating prey.
+                </p>
+                <div class="math">
+                    $$\mathbf{\text{TFI}} = \sqrt{\left(\frac{\partial T}{\partial \text{lat}}\right)^2 + \left(\frac{\partial T}{\partial \text{lon}}\right)^2}$$
+                </div>
+                <ul class="list-disc list-inside text-sm text-gray-600 dark:text-soft-gray mt-4">
+                    <li>(TFI): The Thermal Front Intensity (intensity of the temperature change).</li>
+                    <li>(partial-T)(partial-lat) and (partial-T)(partial-lon): The rate of temperature change (steepness) in the North and East directions, respectively.</li>
+                </ul>
+            </div>
+
+            <div class="bg-background-light dark:bg-background-dark p-6 rounded-xl shadow-2xl border border-secondary/20">
+                <h3 class="text-2xl font-display font-semibold text-secondary mb-4">5. The Composite Hotspot Condition</h3>
+                <p class="text-gray-700 dark:text-soft-gray mb-4">
+                    A location is a Hotspot (Hotspot) only if it meets both the physical and biological thresholds, connected by the logical AND operator. This prevents false positives.
+                </p>
+                <div class="math">
+                    $$\mathbf{\text{Hotspot}=1} \quad \text{if} \quad (\text{TFI} \geq \text{Threshold}_{\text{TFI}}) \quad \mathbf{\text{AND}} \quad (\text{Simulated NPP} \geq \text{Threshold}_{\text{NPP}})$$
+                </div>
+                <div class="mt-4 p-4 border border-primary/30 rounded-lg">
+                    <h4 class="text-lg font-semibold text-primary dark:text-accent-blue mb-2">Condition Breakdown:</h4>
+                    <ul class="list-disc list-inside text-sm text-gray-700 dark:text-soft-gray space-y-1">
+                        <li>Physical Criterion (TFI): The location must be among the top 10% sharpest thermal fronts. This guarantees the physical mechanism to aggregate prey.</li>
+                        <li>Biological Criterion (NPP): The location must have above-average primary productivity (Simulated NPP). This ensures there is sufficient food supply.</li>
+                        <li>Why AND? Using "AND" ensures that the identified areas are the most probable feeding grounds, where aggregation and abundance occur simultaneously.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-t border-primary/20 my-10" />
+
+        <section id="section-visuals" class="mb-16 pt-8 fade-in-on-scroll">
+            <h2 class="text-4xl font-display font-bold text-primary mb-6 border-b border-primary/50 pb-2">Visuals</h2>
+            <p class="text-lg text-gray-700 dark:text-soft-gray leading-relaxed mb-8">
+                This section displays the interactive charts and maps that illustrate the model's key findings.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-light-accent-bg/30 dark:bg-background-dark/50 p-6 rounded-xl shadow-xl border border-primary/20 fade-in-on-scroll">
+                    <h3 class="text-2xl font-display font-semibold text-gray-900 dark:text-white mb-4">Model Feature Importance (MDI Metric)</h3>
+                    <p class="text-sm text-gray-600 dark:text-soft-gray mb-4">
+                        This bar chart visualizes the **Relative Importance Score** for the four key input features used by the Random Forest model, calculated using the Mean Decrease in Impurity (MDI) metric. The score indicates the relative contribution of each variable to
+                        the model's predictive accuracy.
+                    </p>
+                    <div class="h-auto bg-background-light/80 dark:bg-background-dark/80 rounded-lg flex items-center justify-center border border-dashed border-primary/50 p-4">
+                        <img src="{{ url_for('static', filename='features.png') }}" alt="Feature Importance Chart" class="max-h-full max-w-full object-contain">
+                    </div>
+
+                    <div class="mt-6 p-4 border border-secondary/30 rounded-lg bg-background-light dark:bg-background-dark">
+                        <h4 class="text-lg font-semibold text-secondary dark:text-accent-blue mb-2">Detailed Analysis of Feature Influence:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 dark:text-soft-gray space-y-3">
+                            <li><strong class="text-primary dark:text-accent-blue">Dominant Factor: Simulated NPP (~0.27)</strong>
+                                <br>The **Simulated Net Primary Production (NPP)** is the single most important predictor. This confirms the model’s strong reliance on **biological factors**—specifically, the availability of food resources—to identify
+                                high-probability shark feeding zones.
+                            </li>
+                            <li><strong class="text-primary dark:text-accent-blue">Second Key Factor: Latitude (Lat) (~0.26)</strong>
+                                <br>The geographical **Latitude** follows closely behind NPP. This variable acts as a proxy for **physical oceanographic processes**, such as thermal fronts and currents, which are known to aggregate prey. Its high score
+                                validates the importance of physical mechanisms in habitat selection.
+                            </li>
+                            <li><strong class="text-primary dark:text-accent-blue">Physical/Thermal Drivers: SST (~0.24) and Longitude (Lon) (~0.22)</strong>
+                                <br>While less influential than NPP and Lat, **Sea Surface Temperature (SST)** and **Longitude (Lon)** still contribute significantly and relatively equally. SST represents the thermal tolerance of the species, and Longitude
+                                helps account for basin-scale, east-west environmental variations.
+                            </li>
+                            <li><strong class="text-primary dark:text-accent-blue">Key Finding: Balanced Influence</strong>
+                                <br>The importance scores are relatively balanced across all four variables (all between ~0.22 and ~0.27). This suggests that the predicted hotspot habitat is determined not by a single dominant factor, but by a **composite
+                                interaction** between physical mechanisms (Lat, SST, Lon) and biological abundance (NPP).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-light-accent-bg/30 dark:bg-background-dark/50 p-6 rounded-xl shadow-xl border border-primary/20 fade-in-on-scroll">
+                    <h3 class="text-2xl font-display font-semibold text-gray-900 dark:text-white mb-4">Model Classification Performance: ROC Curve</h3>
+                    <p class="text-sm text-gray-600 dark:text-soft-gray mb-4">
+                        This Receiver Operating Characteristic (ROC) curve evaluates the Random Forest model's ability to distinguish between "Hotspot" and "Non-Hotspot" classifications across various probability thresholds. It plots the True Positive Rate (TPR) against the
+                        False Positive Rate (FPR) at different sensitivity settings.
+                    </p>
+                    <div class="h-auto bg-background-light/80 dark:bg-background-dark/80 rounded-lg flex items-center justify-center border border-dashed border-primary/50 p-4">
+                        <img src="{{ url_for('static', filename='roc_curve.png') }}" alt="ROC Curve for Hotspot Classification" class="max-h-full max-w-full object-contain">
+                    </div>
+
+                    <div class="mt-6 p-4 border border-secondary/30 rounded-lg bg-background-light dark:bg-background-dark">
+                        <h4 class="text-lg font-semibold text-secondary dark:text-accent-blue mb-2">Interpretation & Implications:</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 dark:text-soft-gray space-y-2">
+                            <li><strong class="text-primary dark:text-accent-blue">Area Under the Curve (AUC):</strong> The AUC value for the Random Forest Model is <span class="font-bold text-lg text-red-600 dark:text-red-400">0.52</span>. This value is
+                                critically close to <span class="font-bold text-lg text-red-600 dark:text-red-400">0.50</span>, which represents a random classifier (equivalent to guessing).</li>
+                            <li><strong class="text-primary dark:text-accent-blue">Model Performance:</strong> An AUC of 0.52 indicates that the model has very weak discriminative power. It is barely better than a random guess in classifying potential shark
+                                feeding hotspots.</li>
+                            <li><strong class="text-primary dark:text-accent-blue">Visual Assessment:</strong> The blue ROC curve for the model closely follows the red dashed diagonal line (representing random chance). An ideal classifier's curve would sharply
+                                rise towards the top-left corner (TPR=1, FPR=0). The current curve's proximity to the random line visually confirms its limited effectiveness.</li>
+                            <li><strong class="text-primary dark:text-accent-blue">Research Implication:</strong> This result suggests that while the model might identify some trends, its ability to reliably **classify** a specific location as a 'hotspot'
+                                based on the given features and the current model configuration is severely limited. Further model refinement, feature engineering, or exploration of different classification algorithms might be necessary to achieve a more
+                                robust predictive performance for hotspot identification.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 fade-in-on-scroll">
+                <h3 class="text-3xl font-display font-bold text-secondary mb-4 border-b border-secondary/50 pb-2 text-center sm:text-left">Interactive Hotspot Visualization (3D Globe)</h3>
+                <p class="text-lg text-gray-700 dark:text-soft-gray leading-relaxed mb-6 text-center sm:text-left">
+                    This interactive figure (3D Globe) displays the distribution map of the Hotspots, which are determined by the Composite Hotspot Condition. The bright points represent areas with a high probability of shark presence, which are regions where physical aggregation
+                    mechanisms (Thermal Fronts) meet food abundance (Simulated NPP). Please note that loading the map may take a few seconds.
+                </p>
+
+                <div class="bg-background-light dark:bg-background-dark p-2 rounded-xl shadow-2xl border border-primary/40 overflow-hidden" style="min-height: 850px; width: 100%;">
+                    <iframe id="hotspot_globe_3d.html" title="Shark Feeding Hotspots" width="100%" height="800" frameborder="0" src="{{ hotspot_globe_3d }}"> 
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-background-light/95 dark:bg-background-dark/95 border-t border-soft-gray/10 mt-12 py-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 dark:text-soft-gray">
+            <p class="text-sm">&copy; 2025 YA³O Project. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 💡 THEME TOGGLE LOGIC
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+
+            // 1. Check local storage and system preference on initial load
+            const currentTheme = localStorage.getItem('color-theme');
+
+            if (currentTheme === 'light' || (!currentTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+                htmlElement.classList.remove('dark');
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                // Default or saved is dark
+                htmlElement.classList.add('dark');
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+
+            // 2. Click event listener
+            themeToggleBtn.addEventListener('click', () => {
+                if (htmlElement.classList.contains('dark')) {
+                    // Current is Dark, switch to Light
+                    htmlElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                    // Toggle icons (show Moon)
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                } else {
+                    // Current is Light, switch to Dark
+                    htmlElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                    // Toggle icons (show Sun)
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                }
+            });
+
+
+            // 🚀 SCROLL ANIMATION LOGIC (Intersection Observer)
+            const animatedElements = document.querySelectorAll('.fade-in-on-scroll');
+
+            if (animatedElements.length > 0) {
+                const observerOptions = {
+                    root: null, // Viewport as the root
+                    rootMargin: '0px',
+                    threshold: 0.1 // Triggers when 10% of the element is visible
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        // If the element is visible
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            // Stop observing to ensure the animation runs once
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                // Start observing all animated elements
+                animatedElements.forEach(element => {
+                    observer.observe(element);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
