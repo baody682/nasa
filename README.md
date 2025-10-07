@@ -21,7 +21,7 @@ You can explore the interactive models, visualizations, and data analysis report
 The project is structured around a reliable and modern stack:
 
 * **Backend:** **Python** 🐍 | **Flask** Framework
-* **Data & Research:** Habitat modeling based on scientific data/methods (detailed in the `Research Paper For Sharks.pdf`)
+* **Data & Research:** Habitat modeling based on scientific data/methods
 * **Dependencies:** Managed via `requirements.txt`
 * **Frontend:** HTML, CSS, JavaScript (files located in `templates/` and `static/` folders)
 * **Deployment:** Hosted on **PythonAnywhere**
