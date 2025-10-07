@@ -44,6 +44,7 @@ Follow these steps to get a copy of the project running on your local machine.
     ```bash
     # Create and activate a virtual environment
     python -m venv venv
+    
     source venv/bin/activate    # On macOS/Linux
     venv\Scripts\activate     # On Windows
 
