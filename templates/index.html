@@ -369,14 +369,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 🚀 SCROLL ANIMATION LOGIC (Intersection Observer)
             const animatedElements = document.querySelectorAll('.fade-in-on-scroll');
 
             if (animatedElements.length > 0) {
                 const observerOptions = {
-                    root: null, // Viewport as the root
+                    root: null,
                     rootMargin: '0px',
-                    threshold: 0.1 // Triggers when 10% of the element is visible
+                    threshold: 0.1
                 };
 
                 const observer = new IntersectionObserver((entries, observer) => {
@@ -402,7 +401,6 @@
         const htmlElement = document.documentElement;
         const mainHeader = document.getElementById('main-header');
 
-        // 1. وظيفة التبديل بين الوضع الفاتح والداكن
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         if (isDarkMode) {
             htmlElement.classList.add('dark');
@@ -421,7 +419,6 @@
         });
 
 
-        // 2. وظيفة تحديث شريط التقدم
         const updateProgressBarAndHeader = () => {
             const scrollY = window.scrollY;
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -481,7 +478,6 @@
             });
             updateProgressBarAndHeader();
 
-            // 3. وظائف تفاعل النموذج ثلاثي الأبعاد والجدول
             const modelViewer = document.getElementById('tag-model-viewer');
             const viewPartButtons = document.querySelectorAll('.view-part-btn');
             const tooltip = document.getElementById('model-hover-tooltip');
@@ -491,15 +487,12 @@
             const basePath = modelViewer.getAttribute('data-base-path');
             const originalModelFilename = 'main.glb';
 
-            // 🚀 الكود المطلوب: إظهار التلميح عند التحريك وتغيير النموذج عند الضغط
             viewPartButtons.forEach(button => {
                 const row = button.closest('tr');
-                const partName = row.children[0].textContent; // اسم القطعة (من أول عمود)
-                const partDescription = row.children[1].textContent; // تعريف القطعة (من ثاني عمود)
+                const partName = row.children[0].textContent;
+                const partDescription = row.children[1].textContent;
 
-                // **[Hover Logic]**: إظهار اسم القطعة عند تحريك الماوس فوق زر "View"
                 button.addEventListener('mouseenter', () => {
-                    // عرض التلميح
                     tooltipTitle.textContent = partName;
                     tooltipDescription.textContent = partDescription;
                     tooltip.classList.remove('opacity-0');
@@ -528,9 +521,9 @@
 
                     viewPartButtons.forEach(btn => {
                         btn.classList.remove('bg-primary/50');
-                        btn.classList.remove('bg-secondary/50'); // إزالة لون الـ Hover
+                        btn.classList.remove('bg-secondary/50');
                     });
-                    button.classList.add('bg-primary/50'); // إضافة لون التفعيل
+                    button.classList.add('bg-primary/50');
                 });
             });
 
@@ -538,8 +531,6 @@
             if (fullTagButton) {
                 fullTagButton.addEventListener('click', () => {
                     modelViewer.setAttribute('src', `${basePath}${originalModelFilename}`);
-                    // You can optionally restore the poster if the model loading is slow, or just leave it off once loaded.
-                    // modelViewer.setAttribute('poster', '{{ url_for('static', filename='models/main-poster.jpg') }}');
                     viewPartButtons.forEach(btn => {
                         btn.classList.remove('bg-primary/50');
                         btn.classList.remove('bg-secondary/50');
