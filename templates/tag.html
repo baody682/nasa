@@ -42,27 +42,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
 
     <style>
-        /* Define fixed header/nav heights for main content padding calculation */
         
          :root {
             --header-height: 75px;
             --nav-guide-height: 52px;
-            /* Approximate based on py-3 and text-sm */
             --total-fixed-height: calc(var(--header-height) + var(--nav-guide-height));
         }
         
         .view-part-btn {
-            /* Applied Tailwind utilities for hover/focus states */
             @apply px-3 py-1 text-xs rounded-full bg-primary text-white transition-colors shadow-md;
             position: relative;
         }
-        /* FIX: Ensure the hover state works correctly with the applied bg-primary/50 class for active state */
         
         .view-part-btn:hover:not(.view-part-btn-active) {
             @apply bg-secondary/70;
-            /* Slightly darker secondary on hover when not active */
         }
-        /* New class for active button state, ensuring it remains visible */
         
         .view-part-btn-active {
             @apply bg-primary/80;
@@ -75,14 +69,10 @@
         html {
             scroll-behavior: smooth;
         }
-        /* ---------------------------------------------------- */
-        /* التعديل الرئيسي: إزالة التحريك من العناصر العلوية وإضافة delay للعناصر الأخرى */
-        /* ---------------------------------------------------- */
         
         .fade-in-on-scroll {
             opacity: 0;
             transform: translateY(24px);
-            /* سرعة مقبولة للتحميل الفوري */
             transition: opacity 600ms cubic-bezier(0.215, 0.610, 0.355, 1.000), transform 600ms cubic-bezier(0.215, 0.610, 0.355, 1.000);
             will-change: opacity, transform;
         }
@@ -91,11 +81,9 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* اجعل العناصر التي تظهر فورًا (مثل العناوين الرئيسية) تظهر بشكل أسرع */
         
         .immediate-fade-in {
             transition-delay: 100ms;
-            /* تأخير بسيط لإعطاء الأولوية للـ header/nav */
         }
     </style>
 </head>
@@ -358,8 +346,6 @@
                 });
             }
 
-            // 3. 🚀 SCROLL ANIMATION LOGIC (Intersection Observer RE-IMPLEMENTED)
-            // نختار فقط العناصر التي لم تُضف إليها فئة is-visible في كود HTML
             const animatedElements = document.querySelectorAll('.fade-in-on-scroll:not(.is-visible)');
 
             const observerOptions = {
@@ -386,5 +372,6 @@
         });
     </script>
 </body>
+
 
 </html>
