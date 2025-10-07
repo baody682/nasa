@@ -41,11 +41,6 @@
     <title>YA³O - Research</title>
 
     <style>
-        /*
-        The custom CSS is kept concise.
-        All above-the-fold content will now load instantly.
-        The fade-in-on-scroll is retained only for content that may be below the fold.
-        */
         
         html {
             scroll-behavior: smooth;
@@ -80,7 +75,6 @@
         .dark .nav-link:hover {
             color: #00C6FF;
         }
-        /* Utility for immediate, quick fade-in of the main title */
         
         .initial-fade-in {
             opacity: 0;
@@ -194,7 +188,6 @@
                 if (storedMode !== null) {
                     return storedMode === 'true';
                 }
-                // Fallback to system preference if no localStorage value is set
                 return window.matchMedia('(prefers-color-scheme: dark)').matches;
             };
 
@@ -216,7 +209,6 @@
                 updateIconVisibility(isDarkMode);
             });
 
-            // Intersection Observer logic (only for elements with `.fade-in-on-scroll`)
             const animatedElements = document.querySelectorAll('.fade-in-on-scroll');
 
             if (animatedElements.length > 0) {
