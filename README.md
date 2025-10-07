@@ -35,7 +35,7 @@ Follow these steps to get a copy of the project running on your local machine.
 1.  **Clone the Repository**
     ```bash
     git clone [https://github.com/baody682/nasa]
-    cd [Your-Project-Folder-Name]
+    cd cd nasa
     ```
 
 2.  **Install Dependencies**
@@ -45,7 +45,7 @@ Follow these steps to get a copy of the project running on your local machine.
     # Create and activate a virtual environment
     python -m venv venv
     source venv/bin/activate    # On macOS/Linux
-    # venv\Scripts\activate     # On Windows
+    venv\Scripts\activate     # On Windows
 
     # Install all required libraries from the requirements.txt file
     pip install -r requirements.txt
