@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for
 import os 
 
-STATIC_PLOT_FILENAME = 'hotspot_globe_npp_strict_mask.html' 
+STATIC_PLOT_FILENAME = 'hotspot_globe_3d_viz.html' 
 STATIC_PLOT_PATH = 'images/' + STATIC_PLOT_FILENAME
 
 STATIC_PLOT_FILENAME_2 = 'hotspot_globe_3d.html' 
