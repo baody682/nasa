@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        /* Base body styles for Light Mode */
         
         body {
             background-color: #E0DEDE;
@@ -19,14 +18,12 @@
             /* Apply the imported font as the default display font */
             font-family: 'Space Grotesk', sans-serif;
         }
-        /* Dark Mode body styles */
         
         .dark body {
             background-color: #0B1121;
             /* Adjusted for better contrast on Dark Mode body text */
             color: #E5E7EB;
         }
-        /* MathJax styling */
         
         .math {
             direction: ltr;
@@ -39,7 +36,6 @@
             border-radius: 0.5rem;
             border: 1px solid rgba(0, 150, 214, 0.2);
         }
-        /* Scroll animation styles */
         
         .fade-in-on-scroll {
             opacity: 0;
@@ -52,7 +48,6 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* Smooth Scroll */
         
         html {
             scroll-behavior: smooth;
@@ -372,7 +367,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // 💡 THEME TOGGLE LOGIC
             const themeToggleBtn = document.getElementById('theme-toggle');
             const htmlElement = document.documentElement;
             const lightIcon = document.getElementById('theme-toggle-light-icon');
@@ -412,7 +406,6 @@
             });
 
 
-            // 🚀 SCROLL ANIMATION LOGIC (Intersection Observer)
             const animatedElements = document.querySelectorAll('.fade-in-on-scroll');
 
             if (animatedElements.length > 0) {
@@ -441,5 +434,6 @@
         });
     </script>
 </body>
+
 
 </html>
