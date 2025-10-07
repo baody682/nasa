@@ -34,7 +34,7 @@ Follow these steps to get a copy of the project running on your local machine.
 
 1.  **Clone the Repository**
     ```bash
-    git clone [Your-Repo-Link-Here]
+    git clone [https://github.com/baody682/nasa]
     cd [Your-Project-Folder-Name]
     ```
 
