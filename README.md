@@ -35,7 +35,7 @@ Follow these steps to get a copy of the project running on your local machine.
 1.  **Clone the Repository**
     ```bash
     git clone https://github.com/baody682/nasa
-    cd cd nasa
+    cd nasa
     ```
 
 2.  **Install Dependencies**
