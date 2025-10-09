@@ -57,3 +57,7 @@ Follow these steps to get a copy of the project running on your local machine.
     python app.py
     ```
     The application will now be running and accessible in your web browser at `http://127.0.0.1:5000/`.
+
+
+
+soon, we will add the model
