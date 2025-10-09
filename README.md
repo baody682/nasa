@@ -60,4 +60,4 @@ Follow these steps to get a copy of the project running on your local machine.
 
 
 
-soon, we will add the model
+soon, we will add the model.
